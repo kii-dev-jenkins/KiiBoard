@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="0px"
+        android:layout_height="0px"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
+
+    <RelativeLayout
+        android:id="@+id/device_header"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/top_bar"
+        android:orientation="horizontal"
+        android:paddingBottom="5dip"
+        android:paddingLeft="16dip"
+        android:paddingRight="16dip"
+        android:paddingTop="5dip" >
+
+        <ImageView
+            android:id="@+id/header_refresh_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:onClick="handleRefresh"
+            android:src="@drawable/refresh" />
+
+        <ImageView
+            android:id="@+id/header_more_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:onClick="handleMore"
+            android:src="@drawable/more" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_toLeftOf="@id/header_more_button"
+            android:layout_toRightOf="@id/header_refresh_button"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColor="#E3791C"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:cacheColorHint="#00000000"
+        android:divider="#FFFFFF"
+        android:dividerHeight="0px"
+        android:drawSelectorOnTop="false"
+        android:fastScrollEnabled="true"
+        android:listSelector="@null"
+        android:stackFromBottom="true"
+        android:textSize="18sp"
+        android:transcriptMode="alwaysScroll" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/messagebar_bg"
+        android:orientation="horizontal"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip" >
+
+        <Button
+            android:id="@+id/send_button"
+            style="?android:attr/buttonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="10dip"
+            android:layout_marginTop="10dip"
+            android:background="@drawable/post"
+            android:gravity="center"
+            android:nextFocusLeft="@+id/sms_field"
+            android:onClick="handleSendMessage"
+            android:text="@string/post"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/message_field"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="10dip"
+            android:layout_marginRight="5dip"
+            android:layout_marginTop="10dip"
+            android:layout_toLeftOf="@id/send_button"
+            android:background="@drawable/msg_field"
+            android:hint="@string/hint_input_message"
+            android:imeOptions="actionSend|flagNoEnterAction"
+            android:inputType="textShortMessage|textAutoCorrect|textCapSentences|textMultiLine"
+            android:maxLength="2000"
+            android:maxLines="3"
+            android:nextFocusRight="@+id/send_button"
+            android:paddingLeft="10dip"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
+</LinearLayout>

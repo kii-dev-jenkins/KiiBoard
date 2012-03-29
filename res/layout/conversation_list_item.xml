@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:gravity="center_vertical"
+    android:ignoreGravity="@+id/icon"
+    >
+
+    <LinearLayout
+        android:id="@+id/empty"
+        android:layout_width="fill_parent"
+        android:layout_height="10dip" />
+
+    <TextView
+        android:id="@+id/sender"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/empty"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:paddingTop="10dip"
+        android:textColor="#848484"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dip" />
+
+    <RelativeLayout
+        android:id="@+id/receive_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/sender"
+        android:layout_centerVertical="true"
+        android:orientation="horizontal"
+        android:paddingLeft="8dip"
+        >
+
+        <TextView
+            android:id="@+id/receive_body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dip"
+            android:background="@drawable/guest_bubble"
+            android:maxWidth="250dip"
+            android:padding="13dip"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/receive_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_toRightOf="@id/receive_body"
+            android:textColor="#848484"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/send_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/sender"
+        android:layout_centerVertical="true"
+        android:orientation="horizontal"
+        android:paddingRight="8dip"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/send_body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dip"
+            android:background="@drawable/home_bubble"
+            android:maxWidth="250dip"
+            android:padding="13dip"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/send_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_toLeftOf="@id/send_body"
+            android:textColor="#848484"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+</RelativeLayout>

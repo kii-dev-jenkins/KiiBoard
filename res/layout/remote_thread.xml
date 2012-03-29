@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/device_header"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="5dip"
+        android:paddingLeft="16dip"
+        android:paddingRight="16dip"
+        android:paddingTop="5dip"
+        android:background="@drawable/top_bar" >
+
+        <ImageView
+            android:id="@+id/header_refresh_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:onClick="handleRefresh"
+            android:src="@drawable/refresh" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:src="@drawable/kiiboard" />
+
+        <ImageView
+            android:id="@+id/header_new_topic_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:onClick="handleNewTopic"
+            android:src="@drawable/new_topic" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/header_text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:paddingBottom="2dip"
+        android:paddingLeft="10dip"
+        android:paddingTop="2dip"
+        android:singleLine="true"
+        android:text="@string/header_text_path"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:background="@drawable/update_time_bg" />
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:cacheColorHint="#00000000"
+        android:divider="@drawable/divider"
+        android:dividerHeight="2dip"
+        android:drawSelectorOnTop="false"
+        android:textSize="18sp"
+        android:background="@drawable/bg" />
+
+</LinearLayout>

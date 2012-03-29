@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, KiiBoardActivity!</string>
+    <string name="app_name">KiiBoard</string>
+    <string name="login_activity_title">Login</string>
+	
+	<string name="login_activity_username_label">Username or Email</string>
+    <string name="signup_activity_username_label">Username</string>
+    <string name="signup_activity_email_label">Email</string>
+    <string name="login_activity_password_label">Password</string>
+    <string name="login_activity_ok_button">Login</string>
+    <string name="login_activity_sign_up_button">Sign up</string>
+    <string name="login_activity_confirm_password">Confirm password</string>
+    <string name="login_activity_cancel_button">Cancel</string>
+    <string name="login_activity_sign_up_title">Sign up</string>
+    
+    <string name="alert_dialog_cancel_task">Cancel Task</string>
+    <string name="alert_dialog_background">Background</string>
+    
+    <string name="agree_terms">I accept 
+      <a href="http://www.google.com">Term of Service</a> 
+      and <a href="http://www.google.com">Privacy Policy</a>.
+      </string>
+      
+    <string name="backup_conversation">Back up</string>
+    <string name="header_btn_refresh">Refresh</string>
+    <string name="header_text_path">Last refresh time:</string>
+    <string name="forget_password">Forgot password?</string>
+    <string name="post">Post</string>
+    <string name="hint_input_message">Input Message</string>
+</resources>
