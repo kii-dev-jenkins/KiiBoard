@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -39,7 +40,7 @@ public class RemoteConversationActivity extends ListActivity {
     private ImageView mMoreButton;
     private RemoteSMSAdapter mAdapter;
     private KiiQuery mQuery;
-    private EditText mMessageInput;
+    private EditText mMessageInput = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,19 +104,24 @@ public class RemoteConversationActivity extends ListActivity {
     public void handleSendMessage(View v) {
 
         final String input = mMessageInput.getText().toString();
-
+        mMessageInput.setEnabled(false);
         if (!TextUtils.isEmpty(input)) {
-
+            // hide soft keyboard
+            InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            im.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
             KiiObject msg = new KiiObject(KiiBoardClient.CONTAINER_MESSAGE);
             msg.set(Message.PROPERTY_CONTENT, input);
             KiiUser user = KiiBoardClient.getInstance().getloginUser();
             msg.set(Message.PROPERTY_CREATOR, user.getUsername());
             msg.set(Message.PROPERTY_CREATOR_NAME, user.getEmail());
-            msg.set(Message.PROPERTY_TOPIC, KiiBoardClient.CONTAINER_TOPIC + "/" + mUUID);
+            msg.set(Message.PROPERTY_TOPIC, KiiBoardClient.CONTAINER_TOPIC
+                    + "/" + mUUID);
             msg.save(new KiiObjectCallBack() {
                 @Override
                 public void onSaveCompleted(int token, boolean success,
                         KiiObject object, Exception exception) {
+                    mMessageInput.setEnabled(true);
                     if (success) {
                         mQuery = null;
                         mAdapter.clearBodies();
@@ -217,13 +223,15 @@ public class RemoteConversationActivity extends ListActivity {
 
             if (position >= 1) {
                 KiiObject lastMsg = mBodies.get(position - 1);
-                lastCreator = lastMsg.getString(Message.PROPERTY_CREATOR_NAME).toLowerCase();
+                lastCreator = lastMsg.getString(Message.PROPERTY_CREATOR_NAME)
+                        .toLowerCase();
                 vh.empty.setVisibility(View.VISIBLE);
             } else {
                 vh.empty.setVisibility(View.GONE);
             }
             String text = message.getString(Message.PROPERTY_CONTENT);
-            String creatorName = message.getString(Message.PROPERTY_CREATOR_NAME);
+            String creatorName = message
+                    .getString(Message.PROPERTY_CREATOR_NAME);
 
             vh.receive_layout.setVisibility(View.GONE);
             vh.send_layout.setVisibility(View.GONE);
@@ -284,6 +292,14 @@ public class RemoteConversationActivity extends ListActivity {
             v.setTag(vh);
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mMessageInput != null) {
+            mMessageInput.setEnabled(true);
+        }
     }
 
 }
