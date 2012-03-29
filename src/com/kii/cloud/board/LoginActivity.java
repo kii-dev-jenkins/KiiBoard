@@ -1,6 +1,7 @@
 package com.kii.cloud.board;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +14,7 @@ import com.kii.cloud.board.sdk.KiiBoardClient;
 import com.kii.cloud.board.utils.ProgressingDialog;
 import com.kii.cloud.storage.KiiUser;
 import com.kii.cloud.storage.callback.KiiUserCallBack;
+import com.kii.cloud.storage.exception.CloudExecutionException;
 
 public class LoginActivity extends Activity {
 
@@ -86,11 +88,24 @@ public class LoginActivity extends Activity {
                     startActivity(intent);
                     finish();
                 } else {
-                    Toast.makeText(LoginActivity.this,
-                            "Login error, pls check & login again!",
-                            Toast.LENGTH_SHORT).show();
-                    exception.printStackTrace();
-                    android.util.Log.d(LoginActivity.class.getSimpleName(), "exception: "+exception.getMessage());
+                    if (exception instanceof CloudExecutionException) {
+                        CloudExecutionException cloudException = (CloudExecutionException) exception;
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("Error:" + cloudException.getError());
+                        sb.append("\n\n");
+                        sb.append("Exception:" + cloudException.getException());
+                        sb.append("\n\n");
+                        sb.append("Error Details:"
+                                + cloudException.getErrorDetails());
+                        String msg = sb.toString();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(
+                                LoginActivity.this);
+                        builder.setTitle("Register Failed")
+                                .setMessage(msg)
+                                .setNegativeButton(
+                                        getString(android.R.string.ok), null)
+                                .show();
+                    }
                 }
 
             }

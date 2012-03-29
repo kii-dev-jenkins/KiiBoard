@@ -1,6 +1,7 @@
 package com.kii.cloud.board;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +14,7 @@ import com.kii.cloud.board.sdk.KiiBoardClient;
 import com.kii.cloud.board.utils.ProgressingDialog;
 import com.kii.cloud.storage.KiiUser;
 import com.kii.cloud.storage.callback.KiiUserCallBack;
+import com.kii.cloud.storage.exception.CloudExecutionException;
 
 public class SignupActivity extends Activity {
     ProgressingDialog progressing;
@@ -65,8 +67,8 @@ public class SignupActivity extends Activity {
             final String pwd) {
         int token = user.register(new KiiUserCallBack() {
             @Override
-            public void onRegisterCompleted(int token, boolean success, KiiUser user,
-                    Exception exception){
+            public void onRegisterCompleted(int token, boolean success,
+                    KiiUser user, Exception exception) {
                 progressing.closeProgressDialog();
                 if (success) {
                     Toast.makeText(SignupActivity.this,
@@ -74,9 +76,24 @@ public class SignupActivity extends Activity {
                     progressing.showProcessing(0, "User Logging...");
                     asyncUserLogin(user.getUsername(), pwd);
                 } else {
-                    Toast.makeText(SignupActivity.this,
-                            "Sign up error, pls check & register again!",
-                            Toast.LENGTH_SHORT).show();
+                    if (exception instanceof CloudExecutionException) {
+                        CloudExecutionException cloudException = (CloudExecutionException) exception;
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("Error:" + cloudException.getError());
+                        sb.append("\n\n");
+                        sb.append("Exception:" + cloudException.getException());
+                        sb.append("\n\n");
+                        sb.append("Error Details:"
+                                + cloudException.getErrorDetails());
+                        String msg = sb.toString();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(
+                                SignupActivity.this);
+                        builder.setTitle("Register Failed")
+                                .setMessage(msg)
+                                .setNegativeButton(
+                                        getString(android.R.string.ok), null)
+                                .show();
+                    }
                 }
 
             }
@@ -95,8 +112,8 @@ public class SignupActivity extends Activity {
 
         int token = KiiUser.logIn(new KiiUserCallBack() {
             @Override
-            public void onLoginCompleted(int token, boolean success, KiiUser user,
-                    Exception exception) {
+            public void onLoginCompleted(int token, boolean success,
+                    KiiUser user, Exception exception) {
                 progressing.closeProgressDialog();
                 if (success) {
                     // check the old username, if username changed,
