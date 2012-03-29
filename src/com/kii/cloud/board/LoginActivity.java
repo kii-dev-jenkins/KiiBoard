@@ -100,7 +100,7 @@ public class LoginActivity extends Activity {
                         String msg = sb.toString();
                         AlertDialog.Builder builder = new AlertDialog.Builder(
                                 LoginActivity.this);
-                        builder.setTitle("Register Failed")
+                        builder.setTitle("LogIn Failed")
                                 .setMessage(msg)
                                 .setNegativeButton(
                                         getString(android.R.string.ok), null)
