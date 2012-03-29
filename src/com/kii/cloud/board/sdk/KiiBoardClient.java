@@ -21,8 +21,8 @@ public class KiiBoardClient {
     private static final String EMAIL = "email";
 
     private static final String DEFAULT_BASE_URL = "http://dev-usergrid.kii.com:12110";
-    private static final String APP_ID = "4d95dcaa";
-    private static final String APP_KEY = "9606978fddeed23e606b6701a55315d8";
+    private static final String APP_ID = "20df2cb0";
+    private static final String APP_KEY = "18cb6a798b6367844ee96e55f3b71f86";
 
     public static KiiBoardClient getInstance() {
         if (mClient == null) {
