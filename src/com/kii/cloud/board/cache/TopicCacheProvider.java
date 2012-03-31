@@ -15,8 +15,8 @@ import android.text.TextUtils;
 
 public class TopicCacheProvider extends ContentProvider {
 
-    private static final String DATABASE_NAME = "topic.sqlite";
-    private static final int DATABASE_VERSION = 2;
+    private static final String DATABASE_NAME = "board.db";
+    private static final int DATABASE_VERSION = 3;
 
     private ThreadDatabaseHelper mHelper;
 

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kii.cloud.board.cache.TopicCache;
+import com.kii.cloud.board.sdk.Constants;
 import com.kii.cloud.board.sdk.KiiBoardClient;
 import com.kii.cloud.board.utils.ProgressingDialog;
 import com.kii.cloud.storage.KiiUser;
@@ -85,6 +86,7 @@ public class LoginActivity extends Activity {
 
                     Intent intent = new Intent(LoginActivity.this,
                             RemoteMessageListActivity.class);
+                    intent.setAction(Constants.ACTION_REFRESH);
                     startActivity(intent);
                     finish();
                 } else {

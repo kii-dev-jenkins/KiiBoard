@@ -20,10 +20,6 @@ public class KiiBoardClient {
     private static final String UPDATE_TIME = "update_time";
     private static final String EMAIL = "email";
 
-    private static final String DEFAULT_BASE_URL = "https://api.kii.com/app/api";
-    private static final String APP_ID = "20df2cb0";
-    private static final String APP_KEY = "18cb6a798b6367844ee96e55f3b71f86";
-
     public static KiiBoardClient getInstance() {
         if (mClient == null) {
             mClient = new KiiBoardClient();
@@ -33,7 +29,8 @@ public class KiiBoardClient {
     }
 
     private KiiBoardClient() {
-        KiiClient.initialize(APP_ID, APP_KEY, DEFAULT_BASE_URL);
+        KiiClient.initialize(Constants.APP_ID, Constants.APP_KEY,
+                Constants.DEFAULT_BASE_URL);
     }
 
     public static void setLoginUserName(Context context, String username,
@@ -94,7 +91,7 @@ public class KiiBoardClient {
         Uri uri = Uri.fromParts(KII_URI, container, uuid);
         return new KiiObject(uri);
     }
-    
+
     public static final String KII_URI = "kiicloud://";
 
 }

@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kii.cloud.board.cache.TopicCache;
+import com.kii.cloud.board.sdk.Constants;
 import com.kii.cloud.board.sdk.KiiBoardClient;
 import com.kii.cloud.board.sdk.Message;
 import com.kii.cloud.board.sdk.Topic;
@@ -85,6 +86,13 @@ public class RemoteMessageListActivity extends ListActivity {
 
         progressing = new ProgressingDialog(this);
         updateRefreshTime(false);
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        android.util.Log.d("RemoteListActivity", "action is "+action);
+        if (!TextUtils.isEmpty(action)
+                && action.contentEquals(Constants.ACTION_REFRESH)) {
+            handleRefresh(null);
+        }
     }
 
     private static final int MENU_DELETE = 0;
@@ -179,14 +187,11 @@ public class RemoteMessageListActivity extends ListActivity {
                     updateLocalDB((objects.getResult()));
                     updateRefreshTime(true);
                 }
-
             }
-
         }, KiiBoardClient.CONTAINER_TOPIC, null);
     }
 
     private void updateRefreshTime(boolean isUpdatePreference) {
-
         long time = System.currentTimeMillis();
         if (isUpdatePreference) {
             KiiBoardClient.setUpdateTime(this, time);
@@ -198,7 +203,6 @@ public class RemoteMessageListActivity extends ListActivity {
             mUpdateTime.setText("Last refresh time:"
                     + Utils.formatTimeStampString(this, time, true));
         }
-
     }
 
     public void handleNewTopic(View v) {
@@ -217,30 +221,31 @@ public class RemoteMessageListActivity extends ListActivity {
                                         .findViewById(R.id.topic_edit);
                                 String topic_name = input.getText().toString();
                                 if (!TextUtils.isEmpty(topic_name)) {
-                                    KiiObject topic = new KiiObject(KiiBoardClient.CONTAINER_TOPIC);
+                                    KiiObject topic = new KiiObject(
+                                            KiiBoardClient.CONTAINER_TOPIC);
                                     topic.set(Topic.PROPERTY_NAME, topic_name);
-                                    topic.set(Topic.PROPERTY_CREATOR, KiiBoardClient
-                                            .getInstance().getloginUser()
-                                            .getUsername());
+                                    topic.set(Topic.PROPERTY_CREATOR,
+                                            KiiBoardClient.getInstance()
+                                                    .getloginUser()
+                                                    .getUsername());
 
                                     progressing.showProcessing(0,
                                             "Creating topic...");
                                     topic.save(new KiiObjectCallBack() {
-
                                         @Override
                                         public void onSaveCompleted(int token,
                                                 boolean success,
                                                 KiiObject object,
                                                 Exception exception) {
                                             progressing.closeProgressDialog();
-
                                             if (success) {
                                                 KiiObject newTopic = (KiiObject) object;
                                                 ContentValues values = new ContentValues();
                                                 values.put(
                                                         TopicCache.CREATOR_ID,
                                                         newTopic.getString(Topic.PROPERTY_CREATOR));
-                                                values.put(TopicCache.NAME,
+                                                values.put(
+                                                        TopicCache.NAME,
                                                         newTopic.getString(Topic.PROPERTY_NAME));
                                                 values.put(
                                                         TopicCache.UUID,
@@ -287,7 +292,8 @@ public class RemoteMessageListActivity extends ListActivity {
 
         for (KiiObject obj : entities) {
             ContentValues values = new ContentValues();
-            values.put(TopicCache.CREATOR_ID, obj.getString(Topic.PROPERTY_CREATOR, ""));
+            values.put(TopicCache.CREATOR_ID,
+                    obj.getString(Topic.PROPERTY_CREATOR, ""));
             values.put(TopicCache.NAME, obj.getString(Topic.PROPERTY_NAME, ""));
             values.put(TopicCache.UUID, obj.toUri().getLastPathSegment());
             values.put(TopicCache.DATE, obj.getModifedTime());
