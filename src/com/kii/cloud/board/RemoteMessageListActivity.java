@@ -198,7 +198,7 @@ public class RemoteMessageListActivity extends ListActivity {
     public void handleRefresh(View v) {
         progressing.showProcessing(0, "Refreshing Topic info...");
         mQuery = new KiiQuery();
-        mQuery.setLimit(100);
+        mQuery.setLimit(20);
         KiiObject.query(mCallBack, KiiBoardClient.CONTAINER_TOPIC, mQuery);
     }
 
@@ -216,10 +216,12 @@ public class RemoteMessageListActivity extends ListActivity {
                     mQuery = objects.getNextKiiQuery();
                     KiiObject.query(mCallBack, KiiBoardClient.CONTAINER_TOPIC,
                             mQuery);
-                }
+                } 
             }
         }
     };
+
+    public static final String TAG = "RemoteMessageList";
 
     private void updateRefreshTime(boolean isUpdatePreference) {
         long time = System.currentTimeMillis();
@@ -315,22 +317,29 @@ public class RemoteMessageListActivity extends ListActivity {
     }
 
     private void updateLocalDB(List<KiiObject> entities) {
-        getContentResolver().delete(TopicCache.CONTENT_URI, null, null);
+        // getContentResolver().delete(TopicCache.CONTENT_URI, null, null);
 
         if (entities == null || entities.size() == 0)
             return;
-
+        Cursor c = null;
         for (KiiObject obj : entities) {
+            c = getContentResolver().query(TopicCache.CONTENT_URI,
+                    new String[] { TopicCache._ID }, TopicCache.UUID + "=?",
+                    new String[] { obj.toUri().getLastPathSegment() }, null);
+            if(c!=null && c.getCount()>0) {
+                continue;
+            }
             ContentValues values = new ContentValues();
             values.put(TopicCache.CREATOR_ID,
                     obj.getString(Topic.PROPERTY_CREATOR, ""));
             values.put(TopicCache.NAME, obj.getString(Topic.PROPERTY_NAME, ""));
             values.put(TopicCache.UUID, obj.toUri().getLastPathSegment());
             values.put(TopicCache.DATE, obj.getModifedTime());
-
             getContentResolver().insert(TopicCache.CONTENT_URI, values);
         }
-
+        if(c!=null) {
+            c.close();
+        }
         mCursor.requery();
         mAdapter.notifyDataSetChanged();
     }
