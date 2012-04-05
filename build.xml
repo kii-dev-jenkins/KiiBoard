@@ -61,7 +61,7 @@
             byline="true"
             encoding="UTF-8" />
     </target>
-    <target name="kii-release" depends="clean, clean-old, set-version-channel, package-src, release">
+    <target name="kii-release" depends="clean, clean-old, set-version-channel, set-app-info, package-src, release">
         <mkdir dir="${kii.absolute.dir}" />
         <property name="kii.release.file.name"
             value="${ant.project.name}-r${svnversion}.apk" />
@@ -69,6 +69,22 @@
             location="${kii.absolute.dir}/${kii.release.file.name}" />
         <copy overwrite="true" file="${out.final.file}" tofile="${kii.release.file}" />
     </target>
+    
+    <target name="set-app-info">
+        <replaceregexp 
+        file="src/com/kii/cloud/board/sdk/Constants.java" 
+        byline="true" 
+        encoding="UTF-8" 
+        match="^(\s*public static final String APP_ID\s*=\s*)(.*)(\s*;\s*)$" 
+        replace="\1&quot;${app.id}&quot;\3" />
+        <replaceregexp 
+        file="src/com/kii/cloud/board/sdk/Constants.java" 
+        byline="true" 
+        encoding="UTF-8" 
+        match="^(\s*public static final String APP_KEY\s*=\s*)(.*)(\s*;\s*)$" 
+        replace="\1&quot;${app.key}&quot;\3" />
+    </target>
+    
     <!-- End add by Kii -->
     <property file="local.properties" />
 
