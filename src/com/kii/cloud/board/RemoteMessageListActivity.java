@@ -1,20 +1,20 @@
 //
 //
-//  Copyright 2012 Kii Corporation
-//  http://kii.com
+// Copyright 2012 Kii Corporation
+// http://kii.com
 //
-//  Licensed under the Apache License, Version 2.0 (the "License");
-//  you may not use this file except in compliance with the License.
-//  You may obtain a copy of the License at
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 //
-//      http://www.apache.org/licenses/LICENSE-2.0
+// http://www.apache.org/licenses/LICENSE-2.0
 //
-//  Unless required by applicable law or agreed to in writing, software
-//  distributed under the License is distributed on an "AS IS" BASIS,
-//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//  See the License for the specific language governing permissions and
-//  limitations under the License.
-//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
 //
 
 package com.kii.cloud.board;
@@ -107,7 +107,6 @@ public class RemoteMessageListActivity extends ListActivity {
         updateRefreshTime(false);
         Intent intent = getIntent();
         String action = intent.getAction();
-        android.util.Log.d("RemoteListActivity", "action is "+action);
         if (!TextUtils.isEmpty(action)
                 && action.contentEquals(Constants.ACTION_REFRESH)) {
             handleRefresh(null);
@@ -143,18 +142,20 @@ public class RemoteMessageListActivity extends ListActivity {
                     query.setWhere(KQExp.equals(Message.PROPERTY_TOPIC,
                             reference));
                     try {
-                        KiiObject.deleteQuery(KiiBoardClient.CONTAINER_TOPIC,
+                        KiiObject.deleteQuery(KiiBoardClient.CONTAINER_MESSAGE,
                                 query);
-                        KiiObject obj = KiiBoardClient.getKiiObjectByUuid(
-                                KiiBoardClient.CONTAINER_TOPIC, uuid);
-                        obj.delete();
-
-                        RemoteMessageListActivity.this.getContentResolver()
-                                .delete(uri, null, null);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
+                    try {
+                        KiiObject obj = KiiBoardClient.getKiiObjectByUuid(
+                                KiiBoardClient.CONTAINER_TOPIC, uuid);
+                        obj.delete();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    RemoteMessageListActivity.this.getContentResolver().delete(
+                            uri, null, null);
                     getListView().post(new Runnable() {
 
                         @Override
@@ -196,19 +197,29 @@ public class RemoteMessageListActivity extends ListActivity {
 
     public void handleRefresh(View v) {
         progressing.showProcessing(0, "Refreshing Topic info...");
+        mQuery = new KiiQuery();
+        mQuery.setLimit(100);
+        KiiObject.query(mCallBack, KiiBoardClient.CONTAINER_TOPIC, mQuery);
+    }
 
-        KiiObject.query(new KiiObjectCallBack() {
-            @Override
-            public void onQueryCompleted(int token, boolean success,
-                    KiiQueryResult<KiiObject> objects, Exception exception) {
-                progressing.closeProgressDialog();
-                if (success) {
-                    updateLocalDB((objects.getResult()));
-                    updateRefreshTime(true);
+    private KiiQuery mQuery;
+    KiiObjectCallBack mCallBack = new KiiObjectCallBack() {
+        @Override
+        public void onQueryCompleted(int token, boolean success,
+                KiiQueryResult<KiiObject> objects, Exception exception) {
+            progressing.closeProgressDialog();
+            if (success) {
+                List<KiiObject> result = objects.getResult();
+                updateLocalDB(result);
+                updateRefreshTime(true);
+                if (objects.hasNext()) {
+                    mQuery = objects.getNextKiiQuery();
+                    KiiObject.query(mCallBack, KiiBoardClient.CONTAINER_TOPIC,
+                            mQuery);
                 }
             }
-        }, KiiBoardClient.CONTAINER_TOPIC, null);
-    }
+        }
+    };
 
     private void updateRefreshTime(boolean isUpdatePreference) {
         long time = System.currentTimeMillis();

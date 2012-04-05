@@ -165,25 +165,23 @@ public class RemoteConversationActivity extends ListActivity {
             mQuery = new KiiQuery();
             String select = KiiBoardClient.CONTAINER_TOPIC + "/" + mUUID;
             mQuery.setWhere(KQExp.equals(Message.PROPERTY_TOPIC, select));
-            mQuery.sortByDesc(Message.PROPERTY_CREATE_TIME);
-            mQuery.setLimit(20);
+            mQuery.sortByAsc(Message.PROPERTY_CREATE_TIME);
+            mQuery.setLimit(100);
         }
-
-        KiiObject.query(new KiiObjectCallBack() {
-
-            @Override
-            public void onQueryCompleted(int token, boolean success,
-                    KiiQueryResult<KiiObject> objects, Exception exception) {
-                if (success) {
-                    mAdapter.addBodies(objects.getResult());
-                    mQuery = objects.getNextKiiQuery();
-                    mMoreButton.setEnabled(objects.hasNext());
-                }
-            }
-
-        }, KiiBoardClient.CONTAINER_MESSAGE, mQuery);
-
+        KiiObject.query(mCallBack, KiiBoardClient.CONTAINER_MESSAGE, mQuery);
     }
+
+    KiiObjectCallBack mCallBack = new KiiObjectCallBack() {
+        @Override
+        public void onQueryCompleted(int token, boolean success,
+                KiiQueryResult<KiiObject> objects, Exception exception) {
+            if (success) {
+                mAdapter.addBodies(objects.getResult());
+                mQuery = objects.getNextKiiQuery();
+                mMoreButton.setEnabled(objects.hasNext());
+            }
+        }
+    };
 
     private class RemoteSMSAdapter extends BaseAdapter {
 
@@ -194,8 +192,10 @@ public class RemoteConversationActivity extends ListActivity {
         public RemoteSMSAdapter(Context context) {
             mContext = context;
             mBodies = new ArrayList<KiiObject>();
-            mCurrentUser = KiiBoardClient.getInstance().getloginUser()
-                    .getEmail();
+            KiiUser user = KiiBoardClient.getInstance().getloginUser();
+            if (user != null) {
+                mCurrentUser = user.getEmail();
+            }
         }
 
         public void clearBodies() {
