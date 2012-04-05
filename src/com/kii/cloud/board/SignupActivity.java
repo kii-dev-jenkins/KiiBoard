@@ -113,6 +113,15 @@ public class SignupActivity extends Activity {
                                 .setNegativeButton(
                                         getString(android.R.string.ok), null)
                                 .show();
+                    } else {
+                        exception.printStackTrace();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(
+                                SignupActivity.this);
+                        builder.setTitle("Register Failed")
+                                .setMessage(exception.getMessage())
+                                .setNegativeButton(
+                                        getString(android.R.string.ok), null)
+                                .show();
                     }
                 }
 
