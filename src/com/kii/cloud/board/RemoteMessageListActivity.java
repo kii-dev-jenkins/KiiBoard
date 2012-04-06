@@ -122,54 +122,32 @@ public class RemoteMessageListActivity extends ListActivity {
 
         if (item.getItemId() == MENU_DELETE) {
             progressing.showProcessing(0, "Deleting Thread...");
-
             mCursor.moveToPosition(info.position);
             int idx = mCursor.getColumnIndex(TopicCache.UUID);
             final String uuid = mCursor.getString(idx);
-
             final String reference = KiiBoardClient.CONTAINER_TOPIC + "/"
                     + uuid;
-
             final Uri uri = ContentUris.withAppendedId(TopicCache.CONTENT_URI,
                     info.id);
-
-            Thread thread = new Thread(new Runnable() {
-
+            KiiQuery query = new KiiQuery();
+            query.setWhere(KQExp.equals(Message.PROPERTY_TOPIC, reference));
+            KiiObject
+                    .deleteQuery(null, KiiBoardClient.CONTAINER_MESSAGE, query);
+            KiiObject obj = KiiBoardClient.getKiiObjectByUuid(
+                    KiiBoardClient.CONTAINER_TOPIC, uuid);
+            obj.delete(new KiiObjectCallBack() {
                 @Override
-                public void run() {
-                    KiiQuery query = new KiiQuery();
-
-                    query.setWhere(KQExp.equals(Message.PROPERTY_TOPIC,
-                            reference));
-                    try {
-                        KiiObject.deleteQuery(KiiBoardClient.CONTAINER_MESSAGE,
-                                query);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                public void onDeleteCompleted(int token, boolean success,
+                        Exception exception) {
+                    if (success) {
+                        RemoteMessageListActivity.this.getContentResolver()
+                                .delete(uri, null, null);
                     }
-                    try {
-                        KiiObject obj = KiiBoardClient.getKiiObjectByUuid(
-                                KiiBoardClient.CONTAINER_TOPIC, uuid);
-                        obj.delete();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    RemoteMessageListActivity.this.getContentResolver().delete(
-                            uri, null, null);
-                    getListView().post(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            progressing.closeProgressDialog();
-                            mAdapter.notifyDataSetChanged();
-                        }
-
-                    });
+                    progressing.closeProgressDialog();
+                    mAdapter.notifyDataSetChanged();
                 }
 
             });
-
-            thread.start();
 
         }
 
@@ -198,7 +176,7 @@ public class RemoteMessageListActivity extends ListActivity {
     public void handleRefresh(View v) {
         progressing.showProcessing(0, "Refreshing Topic info...");
         mQuery = new KiiQuery();
-        mQuery.setLimit(20);
+        mQuery.setLimit(25);
         KiiObject.query(mCallBack, KiiBoardClient.CONTAINER_TOPIC, mQuery);
     }
 
@@ -212,11 +190,6 @@ public class RemoteMessageListActivity extends ListActivity {
                 List<KiiObject> result = objects.getResult();
                 updateLocalDB(result);
                 updateRefreshTime(true);
-                if (objects.hasNext()) {
-                    mQuery = objects.getNextKiiQuery();
-                    KiiObject.query(mCallBack, KiiBoardClient.CONTAINER_TOPIC,
-                            mQuery);
-                } 
             }
         }
     };
@@ -317,18 +290,11 @@ public class RemoteMessageListActivity extends ListActivity {
     }
 
     private void updateLocalDB(List<KiiObject> entities) {
-        // getContentResolver().delete(TopicCache.CONTENT_URI, null, null);
+        getContentResolver().delete(TopicCache.CONTENT_URI, null, null);
 
         if (entities == null || entities.size() == 0)
             return;
-        Cursor c = null;
         for (KiiObject obj : entities) {
-            c = getContentResolver().query(TopicCache.CONTENT_URI,
-                    new String[] { TopicCache._ID }, TopicCache.UUID + "=?",
-                    new String[] { obj.toUri().getLastPathSegment() }, null);
-            if(c!=null && c.getCount()>0) {
-                continue;
-            }
             ContentValues values = new ContentValues();
             values.put(TopicCache.CREATOR_ID,
                     obj.getString(Topic.PROPERTY_CREATOR, ""));
@@ -336,9 +302,6 @@ public class RemoteMessageListActivity extends ListActivity {
             values.put(TopicCache.UUID, obj.toUri().getLastPathSegment());
             values.put(TopicCache.DATE, obj.getModifedTime());
             getContentResolver().insert(TopicCache.CONTENT_URI, values);
-        }
-        if(c!=null) {
-            c.close();
         }
         mCursor.requery();
         mAdapter.notifyDataSetChanged();
