@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.kii.cloud.board.cache.TopicCache;
 import com.kii.cloud.board.sdk.Constants;
 import com.kii.cloud.board.sdk.KiiBoardClient;
+import com.kii.cloud.board.utils.AdsUtil;
 import com.kii.cloud.board.utils.ProgressingDialog;
 import com.kii.cloud.storage.KiiUser;
 import com.kii.cloud.storage.callback.KiiUserCallBack;
@@ -44,6 +45,7 @@ public class SignupActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.signup);
+        AdsUtil.addToLayout(this, R.id.main_signup, AdsUtil.getKiiAdsLayout(this, Constants.APP_ID, Constants.APP_KEY));
         progressing = new ProgressingDialog(this);
     }
 

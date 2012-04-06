@@ -55,6 +55,7 @@ import com.kii.cloud.board.sdk.Constants;
 import com.kii.cloud.board.sdk.KiiBoardClient;
 import com.kii.cloud.board.sdk.Message;
 import com.kii.cloud.board.sdk.Topic;
+import com.kii.cloud.board.utils.AdsUtil;
 import com.kii.cloud.board.utils.ProgressingDialog;
 import com.kii.cloud.board.utils.Utils;
 import com.kii.cloud.storage.KiiObject;
@@ -111,6 +112,8 @@ public class RemoteMessageListActivity extends ListActivity {
                 && action.contentEquals(Constants.ACTION_REFRESH)) {
             handleRefresh(null);
         }
+		AdsUtil.addToLayout(this, R.id.main_remote, AdsUtil.getKiiAdsLayout(
+				this, Constants.APP_ID, Constants.APP_KEY));
     }
 
     private static final int MENU_DELETE = 0;

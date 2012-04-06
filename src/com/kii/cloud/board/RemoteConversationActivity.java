@@ -43,8 +43,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kii.cloud.board.cache.TopicCache;
+import com.kii.cloud.board.sdk.Constants;
 import com.kii.cloud.board.sdk.KiiBoardClient;
 import com.kii.cloud.board.sdk.Message;
+import com.kii.cloud.board.utils.AdsUtil;
 import com.kii.cloud.board.utils.Utils;
 import com.kii.cloud.storage.KiiObject;
 import com.kii.cloud.storage.KiiUser;
@@ -68,6 +70,9 @@ public class RemoteConversationActivity extends ListActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.conversation);
+		AdsUtil.addToLayout(this, R.id.main_conversation, AdsUtil.getKiiAdsLayout(
+				this, Constants.APP_ID, Constants.APP_KEY));
+
         String topic_name = "";
         Intent intent = this.getIntent();
         if (intent != null) {
