@@ -107,10 +107,8 @@ public class KiiBoardClient {
     }
 
     public static KiiObject getKiiObjectByUuid(String container, String uuid) {
-        Uri uri = Uri.fromParts(KII_URI, container, uuid);
+        Uri uri = Uri.parse("kiicloud://"+container+"/"+uuid);
         return new KiiObject(uri);
     }
-
-    public static final String KII_URI = "kiicloud://";
 
 }
