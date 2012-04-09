@@ -115,7 +115,15 @@ public class RemoteConversationActivity extends ListActivity {
         getRemoteMessage();
     }
 
-    public void handleMore(View v) {
+    
+    @Override
+	protected void onRestart() {
+		super.onRestart();
+		this.getListView().refreshDrawableState();
+	}
+
+
+	public void handleMore(View v) {
         getRemoteMessage();
     }
 
