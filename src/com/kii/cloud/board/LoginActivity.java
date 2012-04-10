@@ -28,6 +28,7 @@ import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kii.ad.KiiAdNetLayout;
 import com.kii.cloud.board.cache.TopicCache;
 import com.kii.cloud.board.sdk.Constants;
 import com.kii.cloud.board.sdk.KiiBoardClient;
@@ -43,18 +44,28 @@ public class LoginActivity extends Activity {
     private TextView mPwdView;
 
     ProgressingDialog progressing;
+	private KiiAdNetLayout mAdLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.login);
-        AdsUtil.addToLayout(this, R.id.main_login, AdsUtil.getKiiAdsLayout(this, Constants.APP_ID, Constants.APP_KEY));
+        mAdLayout=AdsUtil.getKiiAdsLayout(this, Constants.APP_ID, Constants.APP_KEY);
+        AdsUtil.addToLayout(this, R.id.main_login, mAdLayout);
         KiiBoardClient.getInstance();
         mUserNameView = (TextView) findViewById(R.id.sync_login_username_edit);
         mPwdView = (TextView) findViewById(R.id.sync_login_password_edit);
         progressing = new ProgressingDialog(this);
     }
+    
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		mAdLayout=null;
+	}
+
 
     @Override
     public void onResume() {

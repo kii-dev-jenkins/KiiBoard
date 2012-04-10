@@ -42,6 +42,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kii.ad.KiiAdNetLayout;
 import com.kii.cloud.board.cache.TopicCache;
 import com.kii.cloud.board.sdk.Constants;
 import com.kii.cloud.board.sdk.KiiBoardClient;
@@ -62,6 +63,7 @@ public class RemoteConversationActivity extends ListActivity {
     private RemoteSMSAdapter mAdapter;
     private KiiQuery mQuery;
     private EditText mMessageInput = null;
+	private KiiAdNetLayout mAdLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +72,9 @@ public class RemoteConversationActivity extends ListActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.conversation);
-		AdsUtil.addToLayout(this, R.id.main_conversation, AdsUtil.getKiiAdsLayout(
-				this, Constants.APP_ID, Constants.APP_KEY));
+        mAdLayout=AdsUtil.getKiiAdsLayout(
+				this, Constants.APP_ID, Constants.APP_KEY);
+		AdsUtil.addToLayout(this, R.id.main_conversation, mAdLayout);
 
         String topic_name = "";
         Intent intent = this.getIntent();
@@ -122,6 +125,11 @@ public class RemoteConversationActivity extends ListActivity {
 		this.getListView().refreshDrawableState();
 	}
 
+	@Override
+	protected void onStop() {
+		super.onStop();
+		mAdLayout=null;
+	}
 
 	public void handleMore(View v) {
         getRemoteMessage();
