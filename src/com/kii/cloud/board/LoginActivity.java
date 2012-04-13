@@ -1,20 +1,20 @@
 //
 //
-//  Copyright 2012 Kii Corporation
-//  http://kii.com
+// Copyright 2012 Kii Corporation
+// http://kii.com
 //
-//  Licensed under the Apache License, Version 2.0 (the "License");
-//  you may not use this file except in compliance with the License.
-//  You may obtain a copy of the License at
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 //
-//      http://www.apache.org/licenses/LICENSE-2.0
+// http://www.apache.org/licenses/LICENSE-2.0
 //
-//  Unless required by applicable law or agreed to in writing, software
-//  distributed under the License is distributed on an "AS IS" BASIS,
-//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//  See the License for the specific language governing permissions and
-//  limitations under the License.
-//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
 //
 
 package com.kii.cloud.board;
@@ -44,28 +44,27 @@ public class LoginActivity extends Activity {
     private TextView mPwdView;
 
     ProgressingDialog progressing;
-	private KiiAdNetLayout mAdLayout;
+    private KiiAdNetLayout mAdLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.login);
-        mAdLayout=AdsUtil.getKiiAdsLayout(this, Constants.APP_ID, Constants.APP_KEY);
+        mAdLayout = AdsUtil.getKiiAdsLayout(this, Constants.APP_ID,
+                Constants.APP_KEY);
         AdsUtil.addToLayout(this, R.id.main_login, mAdLayout);
         KiiBoardClient.getInstance();
         mUserNameView = (TextView) findViewById(R.id.sync_login_username_edit);
         mPwdView = (TextView) findViewById(R.id.sync_login_password_edit);
         progressing = new ProgressingDialog(this);
     }
-    
 
-	@Override
-	protected void onStop() {
-		super.onStop();
-		mAdLayout=null;
-	}
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mAdLayout = null;
+    }
 
     @Override
     public void onResume() {
@@ -88,7 +87,7 @@ public class LoginActivity extends Activity {
         String pwd = mPwdView.getText().toString();
 
         int token = asyncUserLogin(username, pwd);
-        progressing.showProcessing(token, "User logining!");
+        progressing.showProcessing(token, "User logging in!");
     }
 
     public void clearThreadCache() {

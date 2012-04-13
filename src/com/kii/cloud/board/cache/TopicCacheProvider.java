@@ -67,7 +67,7 @@ public class TopicCacheProvider extends ContentProvider {
                     + TopicCache.DATE + " INTEGER, "
                     + TopicCache.MESSAGE_COUNT + " INTEGER, "
                     + TopicCache.NAME + " TEXT, "
-                    + TopicCache.UUID + " TEXT, "
+                    + TopicCache.URI + " TEXT, "
                     + TopicCache.CREATOR_ID + " TEXT, "
                     + TopicCache.CREATOR_NAME + " TEXT);");
         }
@@ -136,7 +136,7 @@ public class TopicCacheProvider extends ContentProvider {
 
         if (URL_MATCHER.match(uri) == TOPICS) {
 
-            rowID = db.insert(TOPIC_TABLE, TopicCache.UUID, values);
+            rowID = db.insert(TOPIC_TABLE, TopicCache.URI, values);
             res = ContentUris.withAppendedId(TopicCache.CONTENT_URI, rowID);
         } else {
             throw new IllegalArgumentException("Unknown URL " + uri);

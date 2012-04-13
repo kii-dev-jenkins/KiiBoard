@@ -31,7 +31,7 @@ public class TopicCache implements BaseColumns{
     public static final String NAME = "name";
     public static final String CREATOR_ID = "creator";
     public static final String CREATOR_NAME = "creator_name";
-    public static final String UUID = "uuid";
+    public static final String URI = "uri";
     public static final String MESSAGE_COUNT = "message_count";
 
     public static final String DEFAULT_SORT_ORDER = DATE + " DESC";

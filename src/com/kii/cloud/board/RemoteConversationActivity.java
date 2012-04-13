@@ -1,20 +1,20 @@
 //
 //
-//  Copyright 2012 Kii Corporation
-//  http://kii.com
+// Copyright 2012 Kii Corporation
+// http://kii.com
 //
-//  Licensed under the Apache License, Version 2.0 (the "License");
-//  you may not use this file except in compliance with the License.
-//  You may obtain a copy of the License at
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 //
-//      http://www.apache.org/licenses/LICENSE-2.0
+// http://www.apache.org/licenses/LICENSE-2.0
 //
-//  Unless required by applicable law or agreed to in writing, software
-//  distributed under the License is distributed on an "AS IS" BASIS,
-//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//  See the License for the specific language governing permissions and
-//  limitations under the License.
-//  
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
 //
 
 package com.kii.cloud.board;
@@ -58,12 +58,12 @@ import com.kii.cloud.storage.query.KiiQueryResult;
 
 public class RemoteConversationActivity extends ListActivity {
     private long thread_id;
-    private String mUUID;
+    private String mTopicUri;
     private ImageView mMoreButton;
     private RemoteSMSAdapter mAdapter;
     private KiiQuery mQuery;
     private EditText mMessageInput = null;
-	private KiiAdNetLayout mAdLayout;
+    private KiiAdNetLayout mAdLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +72,9 @@ public class RemoteConversationActivity extends ListActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.conversation);
-        mAdLayout=AdsUtil.getKiiAdsLayout(
-				this, Constants.APP_ID, Constants.APP_KEY);
-		AdsUtil.addToLayout(this, R.id.main_conversation, mAdLayout);
+        mAdLayout = AdsUtil.getKiiAdsLayout(this, Constants.APP_ID,
+                Constants.APP_KEY);
+        AdsUtil.addToLayout(this, R.id.main_conversation, mAdLayout);
 
         String topic_name = "";
         Intent intent = this.getIntent();
@@ -86,14 +86,14 @@ public class RemoteConversationActivity extends ListActivity {
                 Uri uri = ContentUris.withAppendedId(TopicCache.CONTENT_URI,
                         thread_id);
                 String[] projection = new String[] { TopicCache.NAME,
-                        TopicCache.UUID };
+                        TopicCache.URI };
                 c = managedQuery(uri, projection, null, null,
                         Utils.DEFAULT_ORDER);
 
                 if (c != null & c.getCount() > 0) {
                     c.moveToFirst();
                     topic_name = c.getString(0);
-                    mUUID = c.getString(1);
+                    mTopicUri = c.getString(1);
                 }
             } finally {
                 if (c != null)
@@ -118,20 +118,19 @@ public class RemoteConversationActivity extends ListActivity {
         getRemoteMessage();
     }
 
-    
     @Override
-	protected void onRestart() {
-		super.onRestart();
-		this.getListView().refreshDrawableState();
-	}
+    protected void onRestart() {
+        super.onRestart();
+        this.getListView().refreshDrawableState();
+    }
 
-	@Override
-	protected void onStop() {
-		super.onStop();
-		mAdLayout=null;
-	}
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mAdLayout = null;
+    }
 
-	public void handleMore(View v) {
+    public void handleMore(View v) {
         getRemoteMessage();
     }
 
@@ -155,8 +154,7 @@ public class RemoteConversationActivity extends ListActivity {
             KiiUser user = KiiBoardClient.getInstance().getloginUser();
             msg.set(Message.PROPERTY_CREATOR, user.getUsername());
             msg.set(Message.PROPERTY_CREATOR_NAME, user.getEmail());
-            msg.set(Message.PROPERTY_TOPIC, KiiBoardClient.CONTAINER_TOPIC
-                    + "/" + mUUID);
+            msg.set(Message.PROPERTY_TOPIC, mTopicUri);
             msg.save(new KiiObjectCallBack() {
                 @Override
                 public void onSaveCompleted(int token, boolean success,
@@ -184,8 +182,7 @@ public class RemoteConversationActivity extends ListActivity {
     private void getRemoteMessage() {
         if (mQuery == null) {
             mQuery = new KiiQuery();
-            String select = KiiBoardClient.CONTAINER_TOPIC + "/" + mUUID;
-            mQuery.setWhere(KQExp.equals(Message.PROPERTY_TOPIC, select));
+            mQuery.setWhere(KQExp.equals(Message.PROPERTY_TOPIC, mTopicUri));
             mQuery.sortByAsc(Message.PROPERTY_CREATE_TIME);
             mQuery.setLimit(100);
         }
