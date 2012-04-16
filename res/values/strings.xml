@@ -9,8 +9,8 @@
     <string name="signup_activity_username_label">Username</string>
     <string name="signup_activity_email_label">Email</string>
     <string name="login_activity_password_label">Password</string>
-    <string name="login_activity_ok_button">Login</string>
-    <string name="login_activity_sign_up_button">Sign up</string>
+    <string name="login_activity_ok_button">Log In</string>
+    <string name="login_activity_sign_up_button">Sign Up</string>
     <string name="login_activity_confirm_password">Confirm password</string>
     <string name="login_activity_cancel_button">Cancel</string>
     <string name="login_activity_sign_up_title">Sign up</string>
