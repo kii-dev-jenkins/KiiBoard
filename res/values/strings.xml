@@ -29,4 +29,5 @@
     <string name="forget_password">Forgot password?</string>
     <string name="post">Post</string>
     <string name="hint_input_message">Input Message</string>
+    <string name="new_topic">New Topic</string>
 </resources>
