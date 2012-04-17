@@ -72,9 +72,12 @@ public class RemoteConversationActivity extends ListActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.conversation);
-        mAdLayout = AdsUtil.getKiiAdsLayout(this, Constants.APP_ID,
-                Constants.APP_KEY);
-        AdsUtil.addToLayout(this, R.id.main_conversation, mAdLayout);
+        
+        if(Constants.ENABLE_ADS){
+	        mAdLayout = AdsUtil.getKiiAdsLayout(this, Constants.APP_ID,
+	                Constants.APP_KEY);
+	        AdsUtil.addToLayout(this, R.id.main_conversation, mAdLayout);
+        }
 
         String topic_name = "";
         Intent intent = this.getIntent();

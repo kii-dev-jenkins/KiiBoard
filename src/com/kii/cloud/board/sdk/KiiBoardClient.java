@@ -21,10 +21,8 @@ package com.kii.cloud.board.sdk;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
 
 import com.kii.cloud.storage.KiiClient;
-import com.kii.cloud.storage.KiiObject;
 import com.kii.cloud.storage.KiiUser;
 
 public class KiiBoardClient {
@@ -104,11 +102,6 @@ public class KiiBoardClient {
 
     public KiiUser getloginUser() {
         return KiiClient.getCurrentUser();
-    }
-
-    public static KiiObject getKiiObjectByUuid(String container, String uuid) {
-        Uri uri = Uri.parse("kiicloud://"+container+"/"+uuid);
-        return new KiiObject(uri);
     }
 
 }

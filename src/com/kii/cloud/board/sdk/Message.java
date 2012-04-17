@@ -20,9 +20,18 @@
 package com.kii.cloud.board.sdk;
 
 public class Message {
+	// topic URI
     public static final String PROPERTY_TOPIC = "topic";
+    
+    // user URI
     public static final String PROPERTY_CREATOR = "creator";
-    public static final String PROPERTY_CONTENT = "content";
+    
+    // display name of the user
     public static final String PROPERTY_CREATOR_NAME = "creator_name";
+    
+    // content of the message
+    public static final String PROPERTY_CONTENT = "content";
+
+    // timestamp which the message is created
     public static final String PROPERTY_CREATE_TIME = "created";
 }

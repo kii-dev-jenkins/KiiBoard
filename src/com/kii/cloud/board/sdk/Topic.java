@@ -20,6 +20,10 @@
 package com.kii.cloud.board.sdk;
 
 public class Topic {
+	
+	// name of the topic
     public static final String PROPERTY_NAME = "name";
+    
+    // user URI
     public static final String PROPERTY_CREATOR = "creator";
 }

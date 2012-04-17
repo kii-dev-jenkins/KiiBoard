@@ -28,11 +28,9 @@ import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kii.ad.KiiAdNetLayout;
 import com.kii.cloud.board.cache.TopicCache;
 import com.kii.cloud.board.sdk.Constants;
 import com.kii.cloud.board.sdk.KiiBoardClient;
-import com.kii.cloud.board.utils.AdsUtil;
 import com.kii.cloud.board.utils.ProgressingDialog;
 import com.kii.cloud.storage.KiiUser;
 import com.kii.cloud.storage.callback.KiiUserCallBack;
@@ -40,22 +38,18 @@ import com.kii.cloud.storage.exception.CloudExecutionException;
 
 public class SignupActivity extends Activity {
     ProgressingDialog progressing;
-	private KiiAdNetLayout mAdLayout;
-
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.signup);
-        mAdLayout=AdsUtil.getKiiAdsLayout(this, Constants.APP_ID, Constants.APP_KEY);
-        AdsUtil.addToLayout(this, R.id.main_signup, mAdLayout);
         progressing = new ProgressingDialog(this);
     }
     
 	@Override
 	protected void onStop() {
 		super.onStop();
-		mAdLayout=null;
 	}
 
 

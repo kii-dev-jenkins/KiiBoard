@@ -4,7 +4,11 @@
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry kind="lib" path="libs/KiiCloudStorageSDK-product-r22073.jar"/>
+	<classpathentry kind="lib" path="libs/KiiCloudStorageSDK-product-r22073.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/KiiBoard/doc/KiiCloudStorageSDK-apidoc-r22073.zip!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="libs/GoogleAdMobAdsSdk-4.3.1.jar"/>
 	<classpathentry kind="lib" path="libs/KiiAdNetSDK_Android_1.0.0.jar"/>
 	<classpathentry kind="lib" path="libs/MMAdView.jar"/>

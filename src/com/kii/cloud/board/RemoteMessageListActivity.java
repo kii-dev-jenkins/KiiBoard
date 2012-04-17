@@ -114,9 +114,12 @@ public class RemoteMessageListActivity extends ListActivity {
                 && action.contentEquals(Constants.ACTION_REFRESH)) {
             handleRefresh(null);
         }
-        mAdLayout = AdsUtil.getKiiAdsLayout(this, Constants.APP_ID,
-                Constants.APP_KEY);
-        AdsUtil.addToLayout(this, R.id.main_remote, mAdLayout);
+        
+        if(Constants.ENABLE_ADS){
+	        mAdLayout = AdsUtil.getKiiAdsLayout(this, Constants.APP_ID,
+	                Constants.APP_KEY);
+	        AdsUtil.addToLayout(this, R.id.main_remote, mAdLayout);
+        }
 
     }
 
@@ -167,7 +170,6 @@ public class RemoteMessageListActivity extends ListActivity {
 
     @Override
     protected void onDestroy() {
-        // TODO Auto-generated method stub
         super.onDestroy();
         mAdLayout = null;
     }
