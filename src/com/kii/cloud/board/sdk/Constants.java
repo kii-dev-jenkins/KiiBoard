@@ -44,5 +44,5 @@ public class Constants {
     /**
      * Turn on or off the Ads
      */
-    public static final boolean ENABLE_ADS = false;
+    public static final boolean ENABLE_ADS = true;
 }
